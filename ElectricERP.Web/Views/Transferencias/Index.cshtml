@@ -1,0 +1,434 @@
+﻿@model List<ElectricERP.Application.DTOs.Transferencias.TransferenciaDto>
+
+@{
+    ViewData["Title"] = "Gestión de Transferencias";
+    var almacenes = ViewBag.Almacenes as List<ElectricERP.Application.DTOs.Almacenes.AlmacenDto> ?? new();
+    var productos = ViewBag.Productos as List<ElectricERP.Application.DTOs.Productos.ProductoDto> ?? new();
+    var vehiculos = ViewBag.Vehiculos as List<ElectricERP.Application.DTOs.Vehiculos.VehiculoDto> ?? new();
+    var usuarios = ViewBag.Usuarios as List<ElectricERP.Application.DTOs.Users.UserDto> ?? new();
+    var transportistas = usuarios.Where(u => u.Rol == "Transportista" && u.Activo).ToList();
+    var vehiculosActivos = vehiculos.Where(v => v.Activo).ToList();
+}
+
+<style>
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 2.6rem 1.5rem 4rem; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.4rem; }
+    .page-eyebrow { font-size: .85rem; color: var(--text-muted); margin-bottom: .2rem; }
+    .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; letter-spacing: -.015em; color: var(--navy); margin: 0; }
+
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff; border: none; border-radius: 11px; font-weight: 600; font-size: .9rem;
+        padding: 10px 20px; box-shadow: 0 10px 26px rgba(45,108,223,.24);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn-primary-glass:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 14px 32px rgba(45,108,223,.3); }
+
+    .alert-soft { border-radius: 12px; padding: 12px 18px; font-size: .9rem; margin-bottom: 1.4rem; border: 1px solid transparent; }
+    .alert-soft-success { background: rgba(45,180,110,.08); color: #2E9E63; border-color: rgba(45,180,110,.2); }
+    .alert-soft-error { background: rgba(220,60,60,.07); color: #C4453D; border-color: rgba(220,60,60,.2); }
+
+    .transfer-card {
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        padding: 22px 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 10px 30px rgba(45,108,223,.06);
+    }
+
+    .transfer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }
+    .transfer-route { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+    .transfer-route .arrow { color: var(--blue); }
+    .transfer-meta { font-size: .82rem; color: var(--text-muted); margin-top: 2px; }
+
+    .status-pill { font-size: .74rem; font-weight: 600; padding: 4px 13px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-pendiente { background: rgba(232,164,47,.14); color: #B8790F; }
+    .status-pendiente .dot { background: #B8790F; }
+    .status-autorizada { background: rgba(45,108,223,.1); color: var(--blue); }
+    .status-autorizada .dot { background: var(--blue); }
+    .status-asignada { background: rgba(111,160,245,.16); color: #2D5BB8; }
+    .status-asignada .dot { background: #2D5BB8; }
+    .status-en_transito { background: rgba(232,164,47,.14); color: #B8790F; }
+    .status-en_transito .dot { background: #B8790F; }
+    .status-entregada { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .status-entregada .dot { background: #2E9E63; }
+    .status-finalizada { background: rgba(45,180,110,.14); color: #2E9E63; }
+    .status-finalizada .dot { background: #2E9E63; }
+    .status-rechazada { background: rgba(220,60,60,.1); color: #C4453D; }
+    .status-rechazada .dot { background: #C4453D; }
+
+    .detalle-list { font-size: .84rem; color: var(--text-muted); margin-bottom: 14px; }
+    .detalle-list span { display: inline-block; background: rgba(45,108,223,.06); border-radius: 8px; padding: 3px 10px; margin: 2px 4px 2px 0; }
+
+    .transfer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-soft { border: none; border-radius: 9px; font-size: .82rem; font-weight: 500; padding: 7px 15px; transition: filter .15s ease; }
+    .btn-soft:hover { filter: brightness(.96); }
+    .btn-soft-success { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .btn-soft-danger { background: rgba(220,60,60,.09); color: #C4453D; }
+    .btn-soft-edit { background: rgba(45,108,223,.1); color: var(--blue); }
+
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: .92rem; }
+
+    .modal-content {
+        background: rgba(255,255,255,.92);
+        backdrop-filter: blur(24px) saturate(160%);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 30px 70px rgba(45,108,223,.2);
+    }
+    .modal-header, .modal-footer { border-color: rgba(45,108,223,.08); }
+    .modal-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--navy); }
+    .modal .form-label { font-size: .82rem; font-weight: 500; color: var(--text-muted); }
+    .modal .form-control, .modal .form-select {
+        background: rgba(255,255,255,.75); border: 1px solid rgba(45,108,223,.15); border-radius: 10px; color: var(--navy); font-size: .92rem;
+    }
+    .modal .form-control:focus, .modal .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+    .modal .form-text { font-size: .78rem; color: var(--text-muted); }
+
+    .btn-ghost {
+        background: transparent; border: 1px solid rgba(45,108,223,.18); color: var(--text-muted);
+        border-radius: 10px; font-size: .88rem; font-weight: 500; padding: 8px 16px;
+    }
+    .btn-ghost:hover { background: rgba(45,108,223,.06); color: var(--navy); }
+
+    .item-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 10px; }
+    .item-row .flex-2 { flex: 2; }
+    .item-row .flex-1 { flex: 1; }
+    .btn-remove-item {
+        background: rgba(220,60,60,.09); color: #C4453D; border: none; border-radius: 8px;
+        width: 38px; height: 38px; flex-shrink: 0;
+    }
+    .btn-add-item {
+        background: rgba(45,108,223,.08); color: var(--blue); border: 1px dashed rgba(45,108,223,.3);
+        border-radius: 10px; font-size: .85rem; font-weight: 500; padding: 8px 14px; width: 100%;
+    }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">Solicitud, autorización y asignación</div>
+            <h2 class="page-title">Transferencias</h2>
+        </div>
+        <button class="btn-primary-glass" data-bs-toggle="modal" data-bs-target="#modalSolicitar" @(almacenes.Count >= 2 && productos.Any() ? "" : "disabled")>
+            + Nueva transferencia
+        </button>
+    </div>
+
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert-soft alert-soft-success">@TempData["MensajeExito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-soft alert-soft-error">@TempData["Error"]</div>
+    }
+
+    @if (almacenes.Count < 2 || !productos.Any())
+    {
+        <div class="alert-soft alert-soft-error mb-3">
+            Necesitás al menos 2 almacenes y 1 producto cargados para poder solicitar una transferencia.
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var t in Model)
+        {
+            var estadoClass = "status-" + t.Estado.ToLower();
+            var estadoLabel = t.Estado switch
+            {
+                "PENDIENTE" => "Pendiente de autorización",
+                "AUTORIZADA" => "Autorizada · falta asignar",
+                "ASIGNADA" => "Asignada",
+                "EN_TRANSITO" => "En tránsito",
+                "ENTREGADA" => "Entregada",
+                "FINALIZADA" => "Finalizada",
+                "RECHAZADA" => "Rechazada",
+                _ => t.Estado
+            };
+
+            <div class="transfer-card">
+                <div class="transfer-top">
+                    <div>
+                        <div class="transfer-route">
+                            @t.NombreAlmacenOrigen <span class="arrow">&rarr;</span> @t.NombreAlmacenDestino
+                        </div>
+                        <div class="transfer-meta">
+                            Solicitada por @t.NombreSupervisorSolicitante el @t.FechaSolicitud.ToString("dd/MM/yyyy HH:mm")
+                            @if (!string.IsNullOrEmpty(t.NombreAdministradorAutorizador))
+                            {
+                                <text> &middot; @(t.Estado == "RECHAZADA" ? "Rechazada" : "Autorizada") por @t.NombreAdministradorAutorizador</text>
+                            }
+                            @if (!string.IsNullOrEmpty(t.Matricula))
+                            {
+                                <text> &middot; Vehículo @t.Matricula @(t.NombreTransportista != null ? $"· {t.NombreTransportista}" : "")</text>
+                            }
+                        </div>
+                    </div>
+                    <span class="status-pill @estadoClass"><span class="dot"></span>@estadoLabel</span>
+                </div>
+
+                <div class="detalle-list">
+                    @foreach (var d in t.Detalles)
+                    {
+                        <span>@d.NombreProducto &times; @d.Cantidad</span>
+                    }
+                </div>
+
+                <div class="transfer-actions">
+                    @if (t.Estado == "PENDIENTE")
+                    {
+                        <form asp-action="Autorizar" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@t.IdTransferencia" />
+                            <input type="hidden" name="aprobado" value="true" />
+                            <button type="submit" class="btn-soft btn-soft-success">Autorizar</button>
+                        </form>
+                        <form asp-action="Autorizar" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@t.IdTransferencia" />
+                            <input type="hidden" name="aprobado" value="false" />
+                            <button type="submit" class="btn-soft btn-soft-danger" onclick="return confirm('¿Rechazar esta transferencia?');">Rechazar</button>
+                        </form>
+                    }
+                    @if (t.Estado == "AUTORIZADA")
+                    {
+                        <button class="btn-soft btn-soft-edit"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalAsignar"
+                                onclick='cargarModalAsignar(@t.IdTransferencia, @Html.Raw(Json.Serialize($"{t.NombreAlmacenOrigen} → {t.NombreAlmacenDestino}")))'>
+                            Asignar vehículo y transportista
+                        </button>
+                    }
+                    @if (t.Estado == "ASIGNADA")
+                    {
+                        <button class="btn-soft btn-soft-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalIniciar"
+                                onclick="cargarModalIniciar(@t.IdTransferencia)">
+                            Iniciar tránsito
+                        </button>
+                    }
+                    @if (t.Estado == "EN_TRANSITO")
+                    {
+                        <a asp-action="Mapa" asp-route-id="@t.IdTransferencia" class="btn-soft btn-soft-edit">Ver mapa</a>
+                        <form asp-action="Entregar" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@t.IdTransferencia" />
+                            <button type="submit" class="btn-soft btn-soft-success" onclick="return confirm('¿Confirmar la entrega en destino?');">Confirmar entrega</button>
+                        </form>
+                    }
+                    @if (t.Estado == "ENTREGADA")
+                    {
+                        <a asp-action="Mapa" asp-route-id="@t.IdTransferencia" class="btn-soft btn-soft-edit">Ver mapa</a>
+                        <form asp-action="Recibir" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@t.IdTransferencia" />
+                            <button type="submit" class="btn-soft btn-soft-success">Confirmar recepción</button>
+                        </form>
+                    }
+                    @if (t.Estado == "FINALIZADA")
+                    {
+                        <a asp-action="Mapa" asp-route-id="@t.IdTransferencia" class="btn-soft btn-soft-edit">Ver mapa</a>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-state">Todavía no hay transferencias registradas.</div>
+    }
+</div>
+
+<!-- Modal Solicitar -->
+<div class="modal fade" id="modalSolicitar" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Solicitar" method="post" id="formSolicitar">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nueva transferencia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Almacén origen</label>
+                            <select name="IdAlmacenOrigen" class="form-select" required>
+                                <option value="">Seleccioná...</option>
+                                @foreach (var a in almacenes)
+                                {
+                                    <option value="@a.IdAlmacen">@a.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Almacén destino</label>
+                            <select name="IdAlmacenDestino" class="form-select" required>
+                                <option value="">Seleccioná...</option>
+                                @foreach (var a in almacenes)
+                                {
+                                    <option value="@a.IdAlmacen">@a.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <label class="form-label">Productos a transferir</label>
+                    <div id="itemsContainer"></div>
+                    <button type="button" class="btn-add-item" onclick="agregarItem()">+ Agregar producto</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Solicitar transferencia</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Asignar -->
+<div class="modal fade" id="modalAsignar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formAsignar" asp-action="Asignar" method="post">
+                <input type="hidden" id="asignarId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Asignar vehículo y transportista</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted" style="font-size:.88rem;">Transferencia: <strong id="asignarRuta"></strong></p>
+
+                    @if (!vehiculosActivos.Any() || !transportistas.Any())
+                    {
+                        <div class="alert-soft alert-soft-error">
+                            Necesitás al menos un vehículo activo y un usuario con rol Transportista activo.
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <label class="form-label">Vehículo</label>
+                        <select name="idVehiculo" class="form-select" required>
+                            <option value="">Seleccioná un vehículo</option>
+                            @foreach (var v in vehiculosActivos)
+                            {
+                                <option value="@v.IdVehiculo">@v.Matricula &middot; @v.Marca @v.Modelo</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Transportista</label>
+                        <select name="idTransportista" class="form-select" required>
+                            <option value="">Seleccioná un transportista</option>
+                            @foreach (var u in transportistas)
+                            {
+                                <option value="@u.Id">@u.UserName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Asignar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Iniciar tránsito -->
+<div class="modal fade" id="modalIniciar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formIniciar" asp-action="Iniciar" method="post">
+                <input type="hidden" id="iniciarId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Iniciar tránsito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted" style="font-size:.88rem;">
+                        Todavía no cargamos GPS real desde una app móvil, así que por ahora cargá la ubicación a mano (o usá la de tu navegador).
+                    </p>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Latitud</label>
+                            <input name="latitud" type="number" step="any" class="form-control" value="-34.901112" required />
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Longitud</label>
+                            <input name="longitud" type="number" step="any" class="form-control" value="-56.164532" required />
+                        </div>
+                    </div>
+                    <button type="button" class="btn-ghost" style="width:100%;" onclick="usarUbicacionActual()">Usar mi ubicación actual</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Iniciar tránsito</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var productosDisponibles = @Html.Raw(Json.Serialize(productos.Select(p => new { id = p.IdProducto, nombre = p.Nombre, sku = p.CodigoSku })));
+        var contadorItems = 0;
+
+        function agregarItem() {
+            var idx = contadorItems++;
+            var container = document.getElementById('itemsContainer');
+            var div = document.createElement('div');
+            div.className = 'item-row';
+            div.id = 'item-' + idx;
+
+            var options = '<option value="">Producto...</option>';
+            productosDisponibles.forEach(function (p) {
+                options += '<option value="' + p.id + '">' + p.nombre + ' (' + p.sku + ')</option>';
+            });
+
+            div.innerHTML =
+                '<div class="flex-2">' +
+                '  <select name="Productos[' + idx + '].IdProducto" class="form-select" required>' + options + '</select>' +
+                '</div>' +
+                '<div class="flex-1">' +
+                '  <input name="Productos[' + idx + '].Cantidad" type="number" min="1" class="form-control" placeholder="Cantidad" required />' +
+                '</div>' +
+                '<button type="button" class="btn-remove-item" onclick="document.getElementById(\'item-' + idx + '\').remove()">&times;</button>';
+
+            container.appendChild(div);
+        }
+
+        // arranca con una fila cargada
+        document.getElementById('modalSolicitar').addEventListener('shown.bs.modal', function () {
+            if (contadorItems === 0) agregarItem();
+        });
+
+        function cargarModalAsignar(id, ruta) {
+            document.getElementById('asignarId').value = id;
+            document.getElementById('asignarRuta').textContent = ruta;
+        }
+
+        function cargarModalIniciar(id) {
+            document.getElementById('iniciarId').value = id;
+        }
+
+        function usarUbicacionActual() {
+            if (!navigator.geolocation) {
+                alert('Tu navegador no soporta geolocalización.');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                var form = document.getElementById('formIniciar');
+                form.querySelector('input[name="latitud"]').value = pos.coords.latitude;
+                form.querySelector('input[name="longitud"]').value = pos.coords.longitude;
+            }, function () {
+                alert('No se pudo obtener tu ubicación. Ingresala manualmente.');
+            });
+        }
+    </script>
+}

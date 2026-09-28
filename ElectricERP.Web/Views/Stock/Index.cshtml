@@ -1,0 +1,352 @@
+﻿@model List<ElectricERP.Application.DTOs.Stock.StockDto>
+
+@{
+    ViewData["Title"] = "Gestión de Stock";
+    var productos = ViewBag.Productos as List<ElectricERP.Application.DTOs.Productos.ProductoDto> ?? new();
+    var secciones = ViewBag.Secciones as List<ElectricERP.Application.DTOs.Secciones.SeccionDto> ?? new();
+    var soloAlertas = ViewBag.SoloAlertas as bool? ?? false;
+}
+
+<style>
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 2.6rem 1.5rem 4rem; }
+
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.4rem; }
+    .page-eyebrow { font-size: .85rem; color: var(--text-muted); margin-bottom: .2rem; }
+    .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; letter-spacing: -.015em; color: var(--navy); margin: 0; }
+
+    .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff; border: none; border-radius: 11px; font-weight: 600; font-size: .9rem;
+        padding: 10px 20px; box-shadow: 0 10px 26px rgba(45,108,223,.24);
+        transition: transform .2s ease, box-shadow .2s ease; text-decoration: none; display: inline-block;
+    }
+    .btn-primary-glass:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 14px 32px rgba(45,108,223,.3); }
+
+    .btn-filter {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 11px;
+        font-weight: 500;
+        font-size: .9rem;
+        padding: 9px 18px;
+        color: var(--text-muted);
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-filter.active { color: var(--blue); border-color: rgba(45,108,223,.3); background: rgba(45,108,223,.06); }
+    .btn-filter:hover { color: var(--navy); }
+
+    .alert-soft { border-radius: 12px; padding: 12px 18px; font-size: .9rem; margin-bottom: 1.4rem; border: 1px solid transparent; }
+    .alert-soft-success { background: rgba(45,180,110,.08); color: #2E9E63; border-color: rgba(45,180,110,.2); }
+    .alert-soft-error { background: rgba(220,60,60,.07); color: #C4453D; border-color: rgba(220,60,60,.2); }
+
+    .glass-panel {
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        box-shadow: 0 14px 40px rgba(45,108,223,.08);
+        overflow: hidden;
+    }
+
+    .glass-table { width: 100%; border-collapse: collapse; margin: 0; }
+    .glass-table thead th {
+        text-align: left; font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+        color: var(--text-muted); background: rgba(45,108,223,.05); padding: 14px 22px; border-bottom: 1px solid rgba(45,108,223,.08);
+    }
+    .glass-table tbody td { padding: 15px 22px; font-size: .92rem; color: var(--navy); border-bottom: 1px solid rgba(45,108,223,.06); vertical-align: middle; }
+    .glass-table tbody tr:last-child td { border-bottom: none; }
+    .glass-table tbody tr { transition: background .15s ease; }
+    .glass-table tbody tr:hover { background: rgba(45,108,223,.04); }
+
+    .sku-chip {
+        font-family: 'Space Grotesk', sans-serif; font-size: .72rem; font-weight: 600; color: var(--text-muted);
+        background: rgba(102,115,140,.08); border-radius: 6px; padding: 2px 8px; display: inline-block; margin-top: 3px;
+    }
+
+    .ubicacion-text { color: var(--text-muted); font-size: .85rem; }
+
+    .cantidad-badge {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 8px;
+        display: inline-block;
+    }
+    .cantidad-normal { background: rgba(45,108,223,.08); color: var(--navy); }
+    .cantidad-minimo { background: rgba(220,60,60,.1); color: #C4453D; }
+    .cantidad-maximo { background: rgba(232,164,47,.14); color: #B8790F; }
+
+    .limites-text { font-size: .8rem; color: var(--text-muted); }
+
+    .status-pill { font-size: .74rem; font-weight: 600; padding: 3px 11px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-normal { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .status-normal .dot { background: #2E9E63; }
+    .status-minimo { background: rgba(220,60,60,.1); color: #C4453D; }
+    .status-minimo .dot { background: #C4453D; }
+    .status-maximo { background: rgba(232,164,47,.14); color: #B8790F; }
+    .status-maximo .dot { background: #B8790F; }
+
+    .row-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+    .btn-soft { border: none; border-radius: 9px; font-size: .8rem; font-weight: 500; padding: 6px 12px; transition: filter .15s ease; }
+    .btn-soft:hover { filter: brightness(.96); }
+    .btn-soft-edit { background: rgba(45,108,223,.1); color: var(--blue); }
+    .btn-soft-warning { background: rgba(232,164,47,.12); color: #B8790F; }
+
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: .92rem; }
+
+    .modal-content {
+        background: rgba(255,255,255,.92);
+        backdrop-filter: blur(24px) saturate(160%);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 30px 70px rgba(45,108,223,.2);
+    }
+    .modal-header, .modal-footer { border-color: rgba(45,108,223,.08); }
+    .modal-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--navy); }
+    .modal .form-label { font-size: .82rem; font-weight: 500; color: var(--text-muted); }
+    .modal .form-control, .modal .form-select {
+        background: rgba(255,255,255,.75); border: 1px solid rgba(45,108,223,.15); border-radius: 10px; color: var(--navy); font-size: .92rem;
+    }
+    .modal .form-control:focus, .modal .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+    .modal .form-text { font-size: .78rem; color: var(--text-muted); }
+
+    .btn-ghost {
+        background: transparent; border: 1px solid rgba(45,108,223,.18); color: var(--text-muted);
+        border-radius: 10px; font-size: .88rem; font-weight: 500; padding: 8px 16px;
+    }
+    .btn-ghost:hover { background: rgba(45,108,223,.06); color: var(--navy); }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">Niveles por producto y sección</div>
+            <h2 class="page-title">Stock</h2>
+        </div>
+        <div class="header-actions">
+            <a asp-action="Index" asp-route-soloAlertas="false" class="btn-filter @(!soloAlertas ? "active" : "")">Todo</a>
+            <a asp-action="Index" asp-route-soloAlertas="true" class="btn-filter @(soloAlertas ? "active" : "")">Solo alertas</a>
+            <button class="btn-primary-glass" data-bs-toggle="modal" data-bs-target="#modalCrear" @(productos.Any() && secciones.Any() ? "" : "disabled")>
+                + Nuevo stock
+            </button>
+        </div>
+    </div>
+
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert-soft alert-soft-success">@TempData["MensajeExito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-soft alert-soft-error">@TempData["Error"]</div>
+    }
+
+    @if (!productos.Any() || !secciones.Any())
+    {
+        <div class="alert-soft alert-soft-error mb-3">
+            Necesitás tener al menos un producto y una sección cargados antes de poder registrar stock.
+        </div>
+    }
+
+    <div class="glass-panel">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="glass-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Ubicación</th>
+                            <th>Cantidad</th>
+                            <th>Límites</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var cantClass = item.EstadoAlerta == "Minimo" ? "cantidad-minimo" : item.EstadoAlerta == "Maximo" ? "cantidad-maximo" : "cantidad-normal";
+                            var pillClass = item.EstadoAlerta == "Minimo" ? "status-minimo" : item.EstadoAlerta == "Maximo" ? "status-maximo" : "status-normal";
+                            var pillLabel = item.EstadoAlerta == "Minimo" ? "Bajo mínimo" : item.EstadoAlerta == "Maximo" ? "Sobre máximo" : "Normal";
+
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold">@item.NombreProducto</div>
+                                    <span class="sku-chip">@item.CodigoSku</span>
+                                </td>
+                                <td class="ubicacion-text">@item.NombreAlmacen &rsaquo; @item.NombreSeccion</td>
+                                <td><span class="cantidad-badge @cantClass">@item.CantidadActual</span></td>
+                                <td class="limites-text">min @item.Minimo &middot; max @item.Maximo</td>
+                                <td><span class="status-pill @pillClass"><span class="dot"></span>@pillLabel</span></td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-soft btn-soft-edit"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalRegistrar"
+                                                onclick="cargarModalRegistrar(@item.IdStock, @Html.Raw(Json.Serialize(item.NombreProducto)), @item.CantidadActual)">
+                                            Registrar
+                                        </button>
+                                        <button class="btn-soft btn-soft-warning"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalLimites"
+                                                onclick="cargarModalLimites(@item.IdStock, @Html.Raw(Json.Serialize(item.NombreProducto)), @item.Minimo, @item.Maximo)">
+                                            Límites
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                @(soloAlertas ? "No hay productos en alerta por el momento." : "Todavía no hay stock cargado.")
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="modalCrear" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Crear" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo registro de stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <select name="IdProducto" class="form-select" required>
+                            <option value="">Seleccioná un producto</option>
+                            @foreach (var p in productos)
+                            {
+                                <option value="@p.IdProducto">@p.Nombre (@p.CodigoSku)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Sección</label>
+                        <select name="IdSeccion" class="form-select" required>
+                            <option value="">Seleccioná una sección</option>
+                            @foreach (var s in secciones)
+                            {
+                                <option value="@s.IdSeccion">@s.NombreAlmacen &rsaquo; @s.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad inicial</label>
+                        <input name="CantidadActual" type="number" min="0" max="1998" class="form-control" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Mínimo</label>
+                            <input name="Minimo" type="number" min="0" class="form-control" required />
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Máximo</label>
+                            <input name="Maximo" type="number" min="1" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-text">El máximo debe ser mayor al mínimo.</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Registrar cantidad -->
+<div class="modal fade" id="modalRegistrar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formRegistrar" asp-action="Registrar" method="post">
+                <input type="hidden" id="registrarId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted" style="font-size:.88rem;">
+                        Producto: <strong id="registrarNombre"></strong>
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad actual</label>
+                        <input id="registrarCantidad" name="cantidadActual" type="number" min="0" max="1998" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Límites -->
+<div class="modal fade" id="modalLimites" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formLimites" asp-action="ActualizarLimites" method="post">
+                <input type="hidden" id="limitesId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Configurar límites</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted" style="font-size:.88rem;">
+                        Producto: <strong id="limitesNombre"></strong>
+                    </p>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Mínimo</label>
+                            <input id="limitesMinimo" name="minimo" type="number" min="0" class="form-control" required />
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Máximo</label>
+                            <input id="limitesMaximo" name="maximo" type="number" min="1" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function cargarModalRegistrar(id, nombre, cantidadActual) {
+            document.getElementById('registrarId').value = id;
+            document.getElementById('registrarNombre').textContent = nombre;
+            document.getElementById('registrarCantidad').value = cantidadActual;
+        }
+
+        function cargarModalLimites(id, nombre, minimo, maximo) {
+            document.getElementById('limitesId').value = id;
+            document.getElementById('limitesNombre').textContent = nombre;
+            document.getElementById('limitesMinimo').value = minimo;
+            document.getElementById('limitesMaximo').value = maximo;
+        }
+    </script>
+}

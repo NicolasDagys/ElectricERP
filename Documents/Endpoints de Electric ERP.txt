@@ -1,0 +1,110 @@
+Endpoints de Electric ERP:
+
+AuthController:
+POST   /api/auth/login
+POST   /api/auth/refresh-token   (renovar JWT)
+POST   /api/auth/logout
+POST   /api/auth/change-password
+
+UsersController:
+GET    /api/users
+GET    /api/users/{id}
+POST   /api/users
+PUT    /api/users/{id}
+DELETE /api/users/{id}        (baja logica)
+PATCH  /api/users/{id}/activate    (activar)
+PATCH  /api/users/{id}/deactivate  (desactivar)
+GET    /api/users/profile
+PUT    /api/users/profile
+
+ProductsController:
+GET    /api/products
+GET    /api/products/{id}
+GET    /api/products/search?text=   (busqueda)
+POST   /api/products
+PUT    /api/products/{id}
+DELETE /api/products/{id}
+GET /api/products/scan/{codigoQR}     (Escanear etiqueta, devuelve ProductoConsultaDTO)
+POST /api/products/{id}/label     (generar etiqueta. devuelve EtiquetaDTO)
+
+SuppliersController
+GET  /api/suppliers
+GET  /api/suppliers/{id}
+POST  /api/suppliers
+PUT   /api/suppliers/{id}
+DELETE  /api/suppliers/{id}
+
+Almacenes:
+GET /api/almacenes
+GET  /api/almacenes/{id}
+POST  /api/almacenes
+PUT  /api/almacenes/{id}
+DELETE /api/almacenes/{id}
+
+Secciones (no tiene PUT)
+GET  /api/sections
+GET  /api/sections/{id}
+POST /api/sections
+DELETE  /api/sections/{id}
+
+Vehículos:
+GET  /api/vehicles
+GET  /api/vehicles/{id}
+POST  /api/vehicles
+PUT   /api/vehicles/{id}
+DELETE  /api/vehicles/{id}
+
+Stock:
+GET  /api/stocks
+GET  /api/stocks/{id}
+PUT /api/stocks/{id}  (registrar stock)
+PUT  /api/stocks/{id}/limits  (configurar minimos y maximos)
+GET /api/stocks/alerts
+PUT  /api/stocks/notifications   (configurar notificaciones)
+
+Inventarios:
+GET  /api/inventories
+GET  /api/inventories/{id}
+POST  /api/inventories
+PUT  /api/inventories/{id}       (actualizar inventario, detalleInventario)
+PATCH /api/inventories/{id}/close    (Cerrar inventario, detalleInventario)
+GET /api/inventories/{id}/details  (obtener detalleInventario)
+
+Solicitudes de ajuste (no tiene PUT ni DELETE):
+GET /api/adjustment-requests
+GET /api/adjustment-requests/{id}
+POST  /api/adjustment-requests
+POST  /api/adjustment-requests/{id}/resolution (Aprobar o Rechazar solicitud)
+
+
+Transferencias
+GET  /api/transfers
+GET  /api/transfers/{id}
+POST /api/transfers    (SOLICITAR TRANFERENCIA)
+POST /api/transfers/{id}/authorization  (Autorizar tranferencia)
+POST /api/transfers/{id}/assignment  (Asignar vehiculo y transportista)
+PATCH	/api/transfers/{id}/dispatch	(Ejecutar despacho desde origen)
+PATCH	/api/transfers/{id}/start	(Iniciar traslado)
+PATCH	/api/transfers/{id}/deliver	(Confirmar entrega)
+PATCH	/api/transfers/{id}/receive	(Confirmar recepción)
+GET	/api/transfers/{id}/details	(Obtener detalle)
+GET	/api/transfers/assigned	      (Obtener transferencias asignadas al transportista)
+
+GPS:
+POST /api/gps/location   (registrar ubicacion gps)
+GET /api/gps/route/{idTransferencia}  (Consultar recorrido)
+GET /api/gps/current      (Ubicación actual)
+
+Informes   (todos con filtros):
+GET /api/reports/products
+GET /api/reports/stock
+GET /api/reports/transfers
+GET /api/reports/inventory
+GET /api/reports/movements
+
+Movimientos (solo lectura porque se registran solos):
+GET   /api/movements
+GET   /api/movements/{id}
+GET   /api/movements/product/{Productid} (obtener movimientos de un producto)
+GET   /api/movements/section/{Sectionid}   (obtener movimientos por seccion)
+GET   /api/movements/user/{id}       (obtener movimientos por usuario)

@@ -1,0 +1,247 @@
+﻿@model List<ElectricERP.Application.DTOs.Inventarios.InventarioDto>
+
+@{
+    ViewData["Title"] = "Gestión de Inventarios";
+    var secciones = ViewBag.Secciones as List<ElectricERP.Application.DTOs.Secciones.SeccionDto> ?? new();
+    var productos = ViewBag.Productos as List<ElectricERP.Application.DTOs.Productos.ProductoDto> ?? new();
+}
+
+<style>
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 2.6rem 1.5rem 4rem; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.4rem; }
+    .page-eyebrow { font-size: .85rem; color: var(--text-muted); margin-bottom: .2rem; }
+    .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; letter-spacing: -.015em; color: var(--navy); margin: 0; }
+
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff; border: none; border-radius: 11px; font-weight: 600; font-size: .9rem;
+        padding: 10px 20px; box-shadow: 0 10px 26px rgba(45,108,223,.24);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .btn-primary-glass:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 14px 32px rgba(45,108,223,.3); }
+
+    .alert-soft { border-radius: 12px; padding: 12px 18px; font-size: .9rem; margin-bottom: 1.4rem; border: 1px solid transparent; }
+    .alert-soft-success { background: rgba(45,180,110,.08); color: #2E9E63; border-color: rgba(45,180,110,.2); }
+    .alert-soft-error { background: rgba(220,60,60,.07); color: #C4453D; border-color: rgba(220,60,60,.2); }
+
+    .inv-card {
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        padding: 22px 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 10px 30px rgba(45,108,223,.06);
+    }
+
+    .inv-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }
+    .inv-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; color: var(--navy); }
+    .inv-meta { font-size: .82rem; color: var(--text-muted); margin-top: 2px; }
+
+    .status-pill { font-size: .74rem; font-weight: 600; padding: 4px 13px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-abierto { background: rgba(232,164,47,.14); color: #B8790F; }
+    .status-abierto .dot { background: #B8790F; }
+    .status-finalizado { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .status-finalizado .dot { background: #2E9E63; }
+
+    .detalle-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: .85rem; }
+    .detalle-table th { text-align: left; color: var(--text-muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid rgba(45,108,223,.08); }
+    .detalle-table td { padding: 6px 10px; border-bottom: 1px solid rgba(45,108,223,.05); color: var(--navy); }
+
+    .diff-ok { color: #2E9E63; font-weight: 600; }
+    .diff-bad { color: #C4453D; font-weight: 600; }
+
+    .row-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .btn-soft { border: none; border-radius: 9px; font-size: .82rem; font-weight: 500; padding: 7px 15px; transition: filter .15s ease; }
+    .btn-soft:hover { filter: brightness(.96); }
+    .btn-soft-success { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .btn-soft-edit { background: rgba(45,108,223,.1); color: var(--blue); }
+
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); font-size: .92rem; }
+
+    .modal-content {
+        background: rgba(255,255,255,.92);
+        backdrop-filter: blur(24px) saturate(160%);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 30px 70px rgba(45,108,223,.2);
+    }
+    .modal-header, .modal-footer { border-color: rgba(45,108,223,.08); }
+    .modal-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--navy); }
+    .modal .form-label { font-size: .82rem; font-weight: 500; color: var(--text-muted); }
+    .modal .form-control, .modal .form-select {
+        background: rgba(255,255,255,.75); border: 1px solid rgba(45,108,223,.15); border-radius: 10px; color: var(--navy); font-size: .92rem;
+    }
+    .modal .form-control:focus, .modal .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+
+    .btn-ghost {
+        background: transparent; border: 1px solid rgba(45,108,223,.18); color: var(--text-muted);
+        border-radius: 10px; font-size: .88rem; font-weight: 500; padding: 8px 16px;
+    }
+    .btn-ghost:hover { background: rgba(45,108,223,.06); color: var(--navy); }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">Conteo físico por sección</div>
+            <h2 class="page-title">Inventarios</h2>
+        </div>
+        <button class="btn-primary-glass" data-bs-toggle="modal" data-bs-target="#modalCrear" @(secciones.Any() ? "" : "disabled")>
+            + Nuevo inventario
+        </button>
+    </div>
+
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert-soft alert-soft-success">@TempData["MensajeExito"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-soft alert-soft-error">@TempData["Error"]</div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var inv in Model)
+        {
+            <div class="inv-card">
+                <div class="inv-top">
+                    <div>
+                        <div class="inv-title">@inv.NombreAlmacen &rsaquo; @inv.NombreSeccion</div>
+                        <div class="inv-meta">
+                            Iniciado el @inv.FechaAlta.ToString("dd/MM/yyyy HH:mm")
+                            @if (inv.FechaCierre != null)
+                            {
+                                <text> &middot; Cerrado el @inv.FechaCierre.Value.ToString("dd/MM/yyyy HH:mm")</text>
+                            }
+                        </div>
+                    </div>
+                    <span class="status-pill @(inv.Estado == "ABIERTO" ? "status-abierto" : "status-finalizado")">
+                        <span class="dot"></span>@(inv.Estado == "ABIERTO" ? "Abierto" : "Finalizado")
+                    </span>
+                </div>
+
+                @if (inv.Detalles.Any())
+                {
+                    <table class="detalle-table">
+                        <thead>
+                            <tr><th>Producto</th><th>Contado</th><th>Sistema</th><th>Diferencia</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in inv.Detalles)
+                            {
+                                <tr>
+                                    <td>@d.NombreProducto</td>
+                                    <td>@d.CantidadInventario</td>
+                                    <td>@d.CantidadSistema</td>
+                                    <td class="@(d.Diferencia == 0 ? "diff-ok" : "diff-bad")">@(d.Diferencia > 0 ? "+" : "")@d.Diferencia</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div style="font-size:.85rem; color:var(--text-muted); margin: 8px 0;">Todavía no se cargó ningún conteo.</div>
+                }
+
+                @if (inv.Estado == "ABIERTO")
+                {
+                    <div class="row-actions">
+                        <button class="btn-soft btn-soft-edit"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalConteo"
+                                onclick="cargarModalConteo(@inv.IdInventario)">
+                            Registrar conteo
+                        </button>
+                        <form asp-action="Cerrar" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@inv.IdInventario" />
+                            <button type="submit" class="btn-soft btn-soft-success" onclick="return confirm('¿Cerrar este inventario? No vas a poder agregar más conteos después.');">
+                                Cerrar inventario
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-state">Todavía no hay inventarios registrados.</div>
+    }
+</div>
+
+<!-- Modal Crear -->
+<div class="modal fade" id="modalCrear" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Crear" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo inventario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="form-label">Sección a inventariar</label>
+                    <select name="idSeccion" class="form-select" required>
+                        <option value="">Seleccioná una sección</option>
+                        @foreach (var s in secciones)
+                        {
+                            <option value="@s.IdSeccion">@s.NombreAlmacen &rsaquo; @s.Nombre</option>
+                        }
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Iniciar inventario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Registrar conteo -->
+<div class="modal fade" id="modalConteo" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formConteo" asp-action="AgregarConteo" method="post">
+                <input type="hidden" id="conteoId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar conteo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <select name="idProducto" class="form-select" required>
+                            <option value="">Seleccioná un producto</option>
+                            @foreach (var p in productos)
+                            {
+                                <option value="@p.IdProducto">@p.Nombre (@p.CodigoSku)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad contada</label>
+                        <input name="cantidadInventario" type="number" min="0" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Guardar conteo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function cargarModalConteo(id) {
+            document.getElementById('conteoId').value = id;
+        }
+    </script>
+}

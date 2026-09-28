@@ -1,0 +1,37 @@
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.deps.json
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.csproj.AssemblyReference.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.AssemblyInfoInputs.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.AssemblyInfo.cs
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\refint\ElectricERP.Application.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ref\ElectricERP.Application.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\Electric.FCBB7FD9.Up2Date
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.deps.json
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.csproj.AssemblyReference.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.AssemblyInfoInputs.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.AssemblyInfo.cs
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.csproj.CoreCompileInputs.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\refint\ElectricERP.Application.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ref\ElectricERP.Application.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.deps.json
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\bin\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.csproj.AssemblyReference.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.AssemblyInfoInputs.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.AssemblyInfo.cs
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.csproj.CoreCompileInputs.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\refint\ElectricERP.Application.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Application\obj\Debug\net8.0\ref\ElectricERP.Application.dll

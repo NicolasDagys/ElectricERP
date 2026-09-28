@@ -1,0 +1,293 @@
+﻿@model List<ElectricERP.Application.DTOs.Almacenes.AlmacenDto>
+
+@{
+    ViewData["Title"] = "Gestión de Almacenes";
+}
+
+<style>
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 2.6rem 1.5rem 4rem; }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .page-eyebrow {
+        font-size: .85rem;
+        color: var(--text-muted);
+        margin-bottom: .2rem;
+    }
+
+    .page-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        color: var(--navy);
+        margin: 0;
+    }
+
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff;
+        border: none;
+        border-radius: 11px;
+        font-weight: 600;
+        font-size: .9rem;
+        padding: 10px 20px;
+        box-shadow: 0 10px 26px rgba(45,108,223,.24);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn-primary-glass:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(45,108,223,.3);
+    }
+
+    .glass-panel {
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        box-shadow: 0 14px 40px rgba(45,108,223,.08);
+        overflow: hidden;
+    }
+
+    .glass-table { width: 100%; border-collapse: collapse; margin: 0; }
+
+    .glass-table thead th {
+        text-align: left;
+        font-size: .78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--text-muted);
+        background: rgba(45,108,223,.05);
+        padding: 14px 22px;
+        border-bottom: 1px solid rgba(45,108,223,.08);
+    }
+
+    .glass-table tbody td {
+        padding: 15px 22px;
+        font-size: .92rem;
+        color: var(--navy);
+        border-bottom: 1px solid rgba(45,108,223,.06);
+        vertical-align: middle;
+    }
+
+    .glass-table tbody tr:last-child td { border-bottom: none; }
+    .glass-table tbody tr { transition: background .15s ease; }
+    .glass-table tbody tr:hover { background: rgba(45,108,223,.04); }
+
+    .id-chip {
+        font-size: .78rem;
+        color: var(--text-muted);
+        background: rgba(102,115,140,.08);
+        border-radius: 6px;
+        padding: 2px 8px;
+    }
+
+    .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    .btn-soft {
+        border: none;
+        border-radius: 9px;
+        font-size: .82rem;
+        font-weight: 500;
+        padding: 6px 14px;
+        transition: filter .15s ease;
+    }
+
+    .btn-soft:hover { filter: brightness(.96); }
+    .btn-soft-edit { background: rgba(45,108,223,.1); color: var(--blue); }
+    .btn-soft-danger { background: rgba(220,60,60,.09); color: #C4453D; }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+        font-size: .92rem;
+    }
+
+    /* Modales */
+    .modal-content {
+        background: rgba(255,255,255,.92);
+        backdrop-filter: blur(24px) saturate(160%);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 30px 70px rgba(45,108,223,.2);
+    }
+
+    .modal-header, .modal-footer { border-color: rgba(45,108,223,.08); }
+
+    .modal-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .modal .form-label {
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .modal .form-control {
+        background: rgba(255,255,255,.75);
+        border: 1px solid rgba(45,108,223,.15);
+        border-radius: 10px;
+        color: var(--navy);
+        font-size: .92rem;
+    }
+
+    .modal .form-control:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px var(--blue-soft);
+    }
+
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid rgba(45,108,223,.18);
+        color: var(--text-muted);
+        border-radius: 10px;
+        font-size: .88rem;
+        font-weight: 500;
+        padding: 8px 16px;
+    }
+
+    .btn-ghost:hover { background: rgba(45,108,223,.06); color: var(--navy); }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">Depósitos y ubicaciones</div>
+            <h2 class="page-title">Almacenes</h2>
+        </div>
+        <button class="btn-primary-glass" data-bs-toggle="modal" data-bs-target="#modalCrear">
+            + Nuevo almacén
+        </button>
+    </div>
+
+    <div class="glass-panel">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="glass-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Dirección</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><span class="id-chip">#@item.IdAlmacen</span></td>
+                                <td class="fw-semibold">@item.Nombre</td>
+                                <td>@item.Direccion</td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-soft btn-soft-edit"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditar"
+                                                onclick="cargarModalEditar(@item.IdAlmacen, '@item.Nombre', '@item.Direccion')">
+                                            Editar
+                                        </button>
+                                        <form asp-action="Eliminar" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.IdAlmacen" />
+                                            <button type="submit" class="btn-soft btn-soft-danger" onclick="return confirm('¿Seguro que desea eliminar este almacén?');">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">Todavía no hay almacenes cargados.</div>
+        }
+    </div>
+</div>
+
+<!-- Modal Crear Almacén -->
+<div class="modal fade" id="modalCrear" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Crear" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo almacén</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input name="Nombre" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <input name="Direccion" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Almacén -->
+<div class="modal fade" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Editar" method="post">
+                <input type="hidden" id="editId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar almacén</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input id="editNombre" name="Nombre" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <input id="editDireccion" name="Direccion" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function cargarModalEditar(id, nombre, direccion) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editNombre').value = nombre;
+            document.getElementById('editDireccion').value = direccion;
+        }
+    </script>
+}

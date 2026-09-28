@@ -1,0 +1,146 @@
+﻿@model ElectricERP.Application.DTOs.Transferencias.TransferenciaDto
+
+@{
+    ViewData["Title"] = "Mapa de transferencia";
+    var recorrido = ViewBag.Recorrido as List<ElectricERP.Application.DTOs.Transferencias.UbicacionDto> ?? new();
+}
+
+<style>
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 2.6rem 1.5rem 4rem; }
+
+    .page-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.4rem; }
+    .page-eyebrow { font-size: .85rem; color: var(--text-muted); margin-bottom: .2rem; }
+    .page-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 700; letter-spacing: -.015em; color: var(--navy); margin: 0; display: flex; align-items: center; gap: 8px; }
+    .page-title .arrow { color: var(--blue); }
+
+    .btn-ghost {
+        background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-muted);
+        border-radius: 10px; font-size: .88rem; font-weight: 500; padding: 8px 16px; text-decoration: none; display: inline-block;
+    }
+    .btn-ghost:hover { color: var(--navy); }
+
+    .status-pill { font-size: .78rem; font-weight: 600; padding: 4px 13px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-en_transito { background: rgba(232,164,47,.14); color: #B8790F; }
+    .status-en_transito .dot { background: #B8790F; }
+    .status-entregada { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .status-entregada .dot { background: #2E9E63; }
+    .status-finalizada { background: rgba(45,180,110,.14); color: #2E9E63; }
+    .status-finalizada .dot { background: #2E9E63; }
+
+    .map-panel {
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 14px 40px rgba(45,108,223,.08);
+        margin-bottom: 20px;
+    }
+
+    #map { height: 480px; border-radius: 14px; z-index: 0; }
+
+    .empty-map-state {
+        height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: .92rem;
+        background: rgba(45,108,223,.04);
+        border-radius: 14px;
+        padding: 2rem;
+    }
+
+    .info-strip { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 16px; font-size: .85rem; color: var(--text-muted); }
+    .info-strip strong { color: var(--navy); }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">Seguimiento en tiempo real</div>
+            <h2 class="page-title">
+                @Model.NombreAlmacenOrigen <span class="arrow">&rarr;</span> @Model.NombreAlmacenDestino
+            </h2>
+        </div>
+        <a asp-action="Index" class="btn-ghost">&larr; Volver a Transferencias</a>
+    </div>
+
+    <div class="map-panel">
+        @if (recorrido.Any())
+        {
+            <div id="map"></div>
+        }
+        else
+        {
+            <div class="empty-map-state">
+                Todavía no hay puntos GPS registrados para esta transferencia.<br />
+                Van a aparecer acá apenas el transportista inicie el tránsito.
+            </div>
+        }
+
+        <div class="info-strip">
+            <span>Transportista: <strong>@(Model.NombreTransportista ?? "—")</strong></span>
+            <span>Vehículo: <strong>@(Model.Matricula ?? "—")</strong></span>
+            <span>Puntos registrados: <strong>@recorrido.Count</strong></span>
+            @if (recorrido.Any())
+            {
+                <span>Última actualización: <strong>@recorrido.Last().FechaHora.ToString("dd/MM/yyyy HH:mm:ss")</strong></span>
+            }
+        </div>
+
+        @if (Model.Estado == "EN_TRANSITO")
+        {
+            <form asp-action="SimularAvance" method="post" class="d-flex gap-2 align-items-end mt-3" style="flex-wrap:wrap;">
+                <input type="hidden" name="id" value="@Model.IdTransferencia" />
+                <div>
+                    <label class="form-label" style="font-size:.78rem; color:var(--text-muted);">Latitud</label>
+                    <input name="latitud" type="number" step="any" class="form-control form-control-sm" value="@(recorrido.Any() ? recorrido.Last().Latitud : -34.901112m)" required />
+                </div>
+                <div>
+                    <label class="form-label" style="font-size:.78rem; color:var(--text-muted);">Longitud</label>
+                    <input name="longitud" type="number" step="any" class="form-control form-control-sm" value="@(recorrido.Any() ? recorrido.Last().Longitud : -56.164532m)" required />
+                </div>
+                <button type="submit" class="btn-ghost">+ Simular avance (solo pruebas)</button>
+            </form>
+        }
+    </div>
+</div>
+
+@if (recorrido.Any())
+{
+    @section Scripts {
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+        <script>
+            var puntos = @Html.Raw(Json.Serialize(recorrido.Select(u => new { lat = u.Latitud, lng = u.Longitud })));
+
+            var latLngs = puntos.map(function (p) { return [p.lat, p.lng]; });
+
+            var map = L.map('map');
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            var polyline = L.polyline(latLngs, { color: '#2D6CDF', weight: 4, opacity: 0.85 }).addTo(map);
+
+            // Marcador de inicio
+            L.circleMarker(latLngs[0], { radius: 8, color: '#2E9E63', fillColor: '#2E9E63', fillOpacity: 1 })
+                .addTo(map)
+                .bindPopup('Inicio del recorrido');
+
+            // Marcador de posición actual (último punto)
+            L.circleMarker(latLngs[latLngs.length - 1], { radius: 9, color: '#2D6CDF', fillColor: '#2D6CDF', fillOpacity: 1 })
+                .addTo(map)
+                .bindPopup('Posición actual')
+                .openPopup();
+
+            map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+        </script>
+    }
+}

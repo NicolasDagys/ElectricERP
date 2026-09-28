@@ -1,0 +1,584 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<style>
+    .hero-wrap {
+        position: relative;
+        min-height: 76vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 3rem 1.5rem 4rem;
+        overflow: hidden;
+    }
+
+    .hero-logo-wrap {
+        position: relative;
+        width: 92px;
+        height: 92px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.6rem;
+    }
+
+    .hero-logo-wrap::before {
+        content: "";
+        position: absolute;
+        inset: -30px;
+        background: radial-gradient(circle, rgba(45,108,223,.35), rgba(111,160,245,.12) 55%, transparent 75%);
+        filter: blur(18px);
+        border-radius: 50%;
+    }
+
+    .hero-logo-wrap img {
+        position: relative;
+        width: 84px;
+        height: 84px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 12px 32px rgba(45,108,223,.28), 0 0 0 6px rgba(255,255,255,.6);
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--glass);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 999px;
+        padding: 7px 16px;
+        font-size: .85rem;
+        font-weight: 500;
+        color: var(--blue);
+        margin-bottom: 1.6rem;
+        box-shadow: 0 6px 20px rgba(45,108,223,.08);
+    }
+
+    .hero-badge .dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--blue);
+        box-shadow: 0 0 0 4px var(--blue-soft);
+    }
+
+    .hero-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: clamp(2.3rem, 5.2vw, 3.9rem);
+        font-weight: 700;
+        letter-spacing: -.02em;
+        line-height: 1.08;
+        margin-bottom: 1.2rem;
+        color: var(--navy);
+    }
+
+    .hero-title .accent {
+        background: linear-gradient(90deg, var(--blue), var(--blue-2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        font-size: 1.08rem;
+        color: var(--text-muted);
+        max-width: 540px;
+        margin: 0 auto 2.4rem;
+        line-height: 1.65;
+    }
+
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: .98rem;
+        padding: 13px 32px;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 12px 30px rgba(45,108,223,.28);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn-primary-glass:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 38px rgba(45,108,223,.36);
+    }
+
+    /* --- Signature element: glass route card --- */
+    .route-card {
+        margin-top: 3.6rem;
+        width: 100%;
+        max-width: 620px;
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 22px;
+        padding: 2rem 1.8rem 1.6rem;
+        box-shadow: var(--shadow);
+    }
+
+    .route-track {
+        position: relative;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(45,108,223,.15), rgba(45,108,223,.35), rgba(45,108,223,.15));
+        margin: 0 8px 1.3rem;
+        border-radius: 2px;
+    }
+
+    .route-pulse {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--blue);
+        box-shadow: 0 0 14px 3px rgba(45,108,223,.55);
+        transform: translate(-50%, -50%);
+        animation: travel 4.5s cubic-bezier(.45,0,.55,1) infinite;
+    }
+
+    @@keyframes travel {
+        0%   { left: 0%; opacity: 0; }
+        8%   { opacity: 1; }
+        92%  { opacity: 1; }
+        100% { left: 100%; opacity: 0; }
+    }
+
+    .route-nodes { display: flex; justify-content: space-between; }
+    .route-node { text-align: center; flex: 1; }
+
+    .route-node .icon-bubble {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid rgba(45,108,223,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--blue);
+        margin: -1.55rem auto .7rem;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 6px 16px rgba(45,108,223,.15);
+    }
+
+    .route-node .label {
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--navy);
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .route-pulse { animation: none; left: 50%; opacity: 1; }
+    }
+
+    /* --- Dashboard --- */
+    .dashboard-section { padding: 3rem 1.5rem 4.5rem; max-width: 1180px; margin: 0 auto; }
+
+    .dashboard-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        margin-bottom: .3rem;
+    }
+
+    .dashboard-subtitle {
+        color: var(--text-muted);
+        font-size: .98rem;
+        margin-bottom: 2.4rem;
+        text-transform: capitalize;
+    }
+
+    .alert-soft { border-radius: 12px; padding: 12px 18px; font-size: .9rem; margin-bottom: 1.6rem; border: 1px solid transparent; }
+    .alert-soft-success { background: rgba(45,180,110,.08); color: #2E9E63; border-color: rgba(45,180,110,.2); }
+    .alert-soft-error { background: rgba(220,60,60,.07); color: #C4453D; border-color: rgba(220,60,60,.2); }
+
+    .mod-card {
+        position: relative;
+        border-radius: 20px;
+        padding: 28px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        isolation: isolate;
+        transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+    }
+
+    .mod-card.is-active {
+        background: linear-gradient(160deg, #16233F 0%, #0E1A30 100%);
+        border: 1px solid rgba(255,255,255,.08);
+        box-shadow: 0 18px 40px rgba(11,15,22,.28);
+        color: #EDF1F8;
+    }
+
+    .mod-card.is-active::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        background: radial-gradient(360px circle at var(--mx,50%) var(--my,0%), rgba(111,160,245,.22), transparent 60%);
+        opacity: 0;
+        transition: opacity .35s ease;
+    }
+
+    .mod-card.is-active:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 26px 60px rgba(11,15,22,.4), 0 0 0 1px rgba(111,160,245,.25);
+    }
+
+    .mod-card.is-active:hover::before { opacity: 1; }
+
+    .mod-card.is-active > * { position: relative; z-index: 1; }
+
+    .mod-card.is-disabled {
+        background: var(--glass);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--glass-border);
+        opacity: .62;
+    }
+
+    .mod-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        transition: transform .3s ease;
+    }
+
+    .mod-card.is-active .mod-icon {
+        background: linear-gradient(135deg, rgba(111,160,245,.22), rgba(45,108,223,.32));
+        color: #9DC0FF;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .mod-card.is-active:hover .mod-icon { transform: scale(1.08) rotate(-4deg); }
+
+    .mod-card.is-disabled .mod-icon {
+        background: rgba(102,115,140,.1);
+        color: var(--text-muted);
+    }
+
+    .mod-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.14rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .mod-card.is-active .mod-title { color: #fff; }
+    .mod-card.is-disabled .mod-title { color: var(--navy); }
+
+    .mod-desc {
+        font-size: .89rem;
+        line-height: 1.55;
+        flex-grow: 1;
+        margin-bottom: 20px;
+    }
+
+    .mod-card.is-active .mod-desc { color: #9FB0C9; }
+    .mod-card.is-disabled .mod-desc { color: var(--text-muted); }
+
+    .mod-action {
+        font-size: .87rem;
+        font-weight: 600;
+        text-decoration: none;
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .mod-card.is-active .mod-action { color: #9DC0FF; }
+    .mod-card.is-active .mod-action:hover { color: #fff; }
+    .mod-card.is-active:hover .mod-action svg { transform: translateX(3px); }
+    .mod-action svg { transition: transform .25s ease; }
+
+    .mod-badge {
+        font-size: .74rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        background: rgba(102,115,140,.08);
+        border-radius: 20px;
+        padding: 4px 12px;
+        align-self: flex-start;
+    }
+</style>
+
+@if (User?.Identity?.IsAuthenticated == true)
+{
+    <div class="dashboard-section">
+        <h1 class="dashboard-title">Hola de nuevo 👋</h1>
+        <div class="dashboard-subtitle">@DateTime.Now.ToString("dddd d 'de' MMMM", new System.Globalization.CultureInfo("es-ES"))</div>
+
+        @if (TempData["MensajeExito"] != null)
+        {
+            <div class="alert-soft alert-soft-success">@TempData["MensajeExito"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert-soft alert-soft-error">@TempData["Error"]</div>
+        }
+
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="8" r="3.2"></circle>
+                            <path d="M3.5 19c.6-3.2 3-5 5.5-5s4.9 1.8 5.5 5"></path>
+                            <path d="M16 9.2c1.2.3 2.1 1.3 2.1 2.6 0 1.1-.6 2-1.5 2.5"></path>
+                            <path d="M15.5 19c.4-2.1 1.7-3.6 3.5-4"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Usuarios</div>
+                    <div class="mod-desc">Administrá accesos, roles y el estado de cada cuenta del equipo.</div>
+                    <a asp-controller="Usuarios" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 10 12 4l9 6"></path>
+                            <path d="M4.5 9.5V20h15V9.5"></path>
+                            <path d="M9.5 20v-6h5v6"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Almacenes</div>
+                    <div class="mod-desc">Consultá y administrá los depósitos y su capacidad disponible.</div>
+                    <a asp-controller="Almacenes" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="7" height="7" rx="1.2"></rect>
+                            <rect x="13" y="4" width="7" height="7" rx="1.2"></rect>
+                            <rect x="4" y="13" width="7" height="7" rx="1.2"></rect>
+                            <rect x="13" y="13" width="7" height="7" rx="1.2"></rect>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Secciones</div>
+                    <div class="mod-desc">Organizá las divisiones internas de cada almacén.</div>
+                    <a asp-controller="Secciones" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 7 12 3l8 4-8 4-8-4Z"></path>
+                            <path d="M4 12l8 4 8-4"></path>
+                            <path d="M4 17l8 4 8-4"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Productos</div>
+                    <div class="mod-desc">Catálogo de componentes, códigos y unidades de medida.</div>
+                    <a asp-controller="Productos" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 16V6a1 1 0 0 1 1-1h8v11"></path>
+                            <path d="M13 9h4l3 3v4h-7"></path>
+                            <circle cx="7.5" cy="18" r="1.6"></circle>
+                            <circle cx="16.5" cy="18" r="1.6"></circle>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Proveedores</div>
+                    <div class="mod-desc">Mantené al día los datos de contacto de cada proveedor.</div>
+                    <a asp-controller="Proveedores" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2.5" y="8" width="12" height="8" rx="1.2"></rect>
+                            <path d="M14.5 11h3.3L20 13.5V16h-5.5"></path>
+                            <circle cx="6.5" cy="17.5" r="1.6"></circle>
+                            <circle cx="16.5" cy="17.5" r="1.6"></circle>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Vehículos</div>
+                    <div class="mod-desc">Consultá la flota disponible para próximas entregas.</div>
+                    <a asp-controller="Vehiculos" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 7 12 3l8 4-8 4-8-4Z"></path>
+                            <path d="M4 12l8 4 8-4"></path>
+                            <path d="M4 17l8 4 8-4"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Stock</div>
+                    <div class="mod-desc">Mirá los niveles de stock y recibí alertas por faltantes.</div>
+                    <a asp-controller="Stock" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="3.5" width="14" height="17" rx="1.5"></rect>
+                            <path d="M9 3.5v-.8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v.8"></path>
+                            <path d="M8.5 10h7M8.5 13.5h7M8.5 17h4.5"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Inventarios</div>
+                    <div class="mod-desc">Realizá conteos físicos y cerrá inventarios periódicos.</div>
+                    <a asp-controller="Inventarios" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Ajustes</div>
+                    <div class="mod-desc">Aprobá o rechazá correcciones de stock e inventario.</div>
+                    <a asp-controller="Ajustes" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-active">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 8h13"></path>
+                            <path d="M14 4.5 17.5 8 14 11.5"></path>
+                            <path d="M20 16H7"></path>
+                            <path d="M10 12.5 6.5 16 10 19.5"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Transferencias</div>
+                    <div class="mod-desc">Solicitá, autorizá y seguí traslados entre almacenes.</div>
+                    <a asp-controller="Transferencias" asp-action="Index" class="mod-action">Gestionar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4">
+                <div class="mod-card is-disabled">
+                    <div class="mod-icon">
+                        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 20V10"></path>
+                            <path d="M10 20V4"></path>
+                            <path d="M16 20v-7"></path>
+                            <path d="M3 20h18"></path>
+                        </svg>
+                    </div>
+                    <div class="mod-title">Informes</div>
+                    <div class="mod-desc">Generá reportes de stock, transferencias y movimientos.</div>
+                    <span class="mod-badge">Próximamente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="hero-wrap">
+        <div class="hero-logo-wrap">
+            <img src="~/images/logo.png" alt="Electric ERP" onerror="this.parentElement.style.display='none'" />
+        </div>
+        <div class="hero-badge"><span class="dot"></span> Plataforma interna de logística</div>
+        <h1 class="hero-title">Todo tu almacén,<br><span class="accent">en un solo lugar.</span></h1>
+        <p class="hero-subtitle">
+            Seguí cada producto desde que llega del proveedor hasta que se entrega en destino, con visibilidad clara en cada paso del camino.
+        </p>
+        <a href="/Auth/Login" class="btn-primary-glass">Iniciar sesión</a>
+
+        <div class="route-card">
+            <div class="route-track">
+                <div class="route-pulse"></div>
+            </div>
+            <div class="route-nodes">
+                <div class="route-node">
+                    <div class="icon-bubble">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 16V6a1 1 0 0 1 1-1h8v11"></path>
+                            <path d="M13 9h4l3 3v4h-7"></path>
+                            <circle cx="7.5" cy="18" r="1.6"></circle>
+                            <circle cx="16.5" cy="18" r="1.6"></circle>
+                        </svg>
+                    </div>
+                    <div class="label">Proveedor</div>
+                </div>
+                <div class="route-node">
+                    <div class="icon-bubble">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 10 12 4l9 6"></path>
+                            <path d="M4.5 9.5V20h15V9.5"></path>
+                            <path d="M9.5 20v-6h5v6"></path>
+                        </svg>
+                    </div>
+                    <div class="label">Almacén</div>
+                </div>
+                <div class="route-node">
+                    <div class="icon-bubble">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2.5" y="8" width="12" height="8" rx="1.2"></rect>
+                            <path d="M14.5 11h3.3L20 13.5V16h-5.5"></path>
+                            <circle cx="6.5" cy="17.5" r="1.6"></circle>
+                            <circle cx="16.5" cy="17.5" r="1.6"></circle>
+                        </svg>
+                    </div>
+                    <div class="label">Camión</div>
+                </div>
+                <div class="route-node">
+                    <div class="icon-bubble">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 6 9 17l-5-5"></path>
+                        </svg>
+                    </div>
+                    <div class="label">Entrega</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.mod-card.is-active').forEach(function (card) {
+            card.addEventListener('mousemove', function (e) {
+                var rect = card.getBoundingClientRect();
+                var x = ((e.clientX - rect.left) / rect.width) * 100;
+                var y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mx', x + '%');
+                card.style.setProperty('--my', y + '%');
+            });
+        });
+    </script>
+}

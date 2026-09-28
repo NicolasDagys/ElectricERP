@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "ElectricERP.Api\\ElectricERP.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ElectricERP.Web\\ElectricERP.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

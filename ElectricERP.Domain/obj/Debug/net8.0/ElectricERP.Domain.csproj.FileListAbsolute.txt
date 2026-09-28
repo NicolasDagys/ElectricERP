@@ -1,0 +1,34 @@
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.deps.json
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.AssemblyInfoInputs.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.AssemblyInfo.cs
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\refint\ElectricERP.Domain.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ref\ElectricERP.Domain.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\Electric.96E24BD1.Up2Date
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.deps.json
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.AssemblyInfoInputs.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.AssemblyInfo.cs
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.csproj.CoreCompileInputs.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\refint\ElectricERP.Domain.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ref\ElectricERP.Domain.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.deps.json
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\bin\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.AssemblyInfoInputs.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.AssemblyInfo.cs
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.csproj.CoreCompileInputs.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\refint\ElectricERP.Domain.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Domain\obj\Debug\net8.0\ref\ElectricERP.Domain.dll

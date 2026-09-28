@@ -1,0 +1,58 @@
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.deps.json
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.runtimeconfig.json
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.AssemblyInfo.cs
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\Electric.A5DCB809.Up2Date
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\refint\ElectricERP.Infrastructure.dll
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.pdb
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.genruntimeconfig.cache
+C:\Users\Alex\Desktop\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ref\ElectricERP.Infrastructure.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.deps.json
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.runtimeconfig.json
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.AssemblyInfo.cs
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\Electric.A5DCB809.Up2Date
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\refint\ElectricERP.Infrastructure.dll
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.pdb
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.genruntimeconfig.cache
+C:\Users\nicol\Downloads\ElectricERP (1)\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ref\ElectricERP.Infrastructure.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.AssemblyInfo.cs
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\refint\ElectricERP.Infrastructure.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.deps.json
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.runtimeconfig.json
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Infrastructure.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Application.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Domain.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Application.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\ElectricERP.Domain.pdb
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\Electric.A5DCB809.Up2Date
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ElectricERP.Infrastructure.genruntimeconfig.cache
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\obj\Debug\net8.0\ref\ElectricERP.Infrastructure.dll
+C:\Users\nicol\OneDrive\Documentos\BIOS Analista\Curso\Tercer Ano\Proyecto final\ElectricERP\ElectricERP.Infrastructure\bin\Debug\net8.0\QuestPDF.Fonts.Lato.br

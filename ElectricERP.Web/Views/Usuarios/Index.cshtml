@@ -1,0 +1,414 @@
+﻿@model List<ElectricERP.Application.DTOs.Users.UserDto>
+
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+}
+
+<style>
+    .page-wrap { max-width: 1180px; margin: 0 auto; padding: 2.6rem 1.5rem 4rem; }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .page-eyebrow {
+        font-size: .85rem;
+        color: var(--text-muted);
+        margin-bottom: .2rem;
+    }
+
+    .page-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        color: var(--navy);
+        margin: 0;
+    }
+
+    .btn-primary-glass {
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff;
+        border: none;
+        border-radius: 11px;
+        font-weight: 600;
+        font-size: .9rem;
+        padding: 10px 20px;
+        box-shadow: 0 10px 26px rgba(45,108,223,.24);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn-primary-glass:hover {
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(45,108,223,.3);
+    }
+
+    .glass-panel {
+        background: var(--glass);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        box-shadow: 0 14px 40px rgba(45,108,223,.08);
+        overflow: hidden;
+    }
+
+    .glass-table { width: 100%; border-collapse: collapse; margin: 0; }
+
+    .glass-table thead th {
+        text-align: left;
+        font-size: .78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--text-muted);
+        background: rgba(45,108,223,.05);
+        padding: 14px 22px;
+        border-bottom: 1px solid rgba(45,108,223,.08);
+    }
+
+    .glass-table tbody td {
+        padding: 15px 22px;
+        font-size: .92rem;
+        color: var(--navy);
+        border-bottom: 1px solid rgba(45,108,223,.06);
+        vertical-align: middle;
+    }
+
+    .glass-table tbody tr:last-child td { border-bottom: none; }
+    .glass-table tbody tr { transition: background .15s ease; }
+    .glass-table tbody tr:hover { background: rgba(45,108,223,.04); }
+
+    .user-cell { display: flex; align-items: center; gap: 10px; }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--blue), var(--blue-2));
+        color: #fff;
+        font-size: .8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .role-pill {
+        font-size: .76rem;
+        font-weight: 500;
+        padding: 3px 11px;
+        border-radius: 20px;
+        background: rgba(45,108,223,.1);
+        color: var(--blue);
+    }
+
+    .status-pill {
+        font-size: .76rem;
+        font-weight: 500;
+        padding: 3px 11px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    .status-active { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .status-active .dot { background: #2E9E63; }
+    .status-inactive { background: rgba(220,60,60,.09); color: #C4453D; }
+    .status-inactive .dot { background: #C4453D; }
+
+    .row-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+    .btn-soft {
+        border: none;
+        border-radius: 9px;
+        font-size: .82rem;
+        font-weight: 500;
+        padding: 6px 14px;
+        transition: filter .15s ease;
+    }
+
+    .btn-soft:hover { filter: brightness(.96); }
+    .btn-soft-edit { background: rgba(45,108,223,.1); color: var(--blue); }
+    .btn-soft-warning { background: rgba(232,164,47,.12); color: #B8790F; }
+    .btn-soft-success { background: rgba(45,180,110,.1); color: #2E9E63; }
+    .btn-soft-danger { background: rgba(220,60,60,.09); color: #C4453D; }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+        font-size: .92rem;
+    }
+
+    /* Modales */
+    .modal-content {
+        background: rgba(255,255,255,.92);
+        backdrop-filter: blur(24px) saturate(160%);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        border-radius: 18px;
+        box-shadow: 0 30px 70px rgba(45,108,223,.2);
+    }
+
+    .modal-header, .modal-footer { border-color: rgba(45,108,223,.08); }
+
+    .modal-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .modal .form-label {
+        font-size: .82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .modal .form-control, .modal .form-select {
+        background: rgba(255,255,255,.75);
+        border: 1px solid rgba(45,108,223,.15);
+        border-radius: 10px;
+        color: var(--navy);
+        font-size: .92rem;
+    }
+
+    .modal .form-control:focus, .modal .form-select:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px var(--blue-soft);
+    }
+
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid rgba(45,108,223,.18);
+        color: var(--text-muted);
+        border-radius: 10px;
+        font-size: .88rem;
+        font-weight: 500;
+        padding: 8px 16px;
+    }
+
+    .btn-ghost:hover { background: rgba(45,108,223,.06); color: var(--navy); }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div>
+            <div class="page-eyebrow">Accesos y roles del equipo</div>
+            <h2 class="page-title">Usuarios</h2>
+        </div>
+        <button class="btn-primary-glass" data-bs-toggle="modal" data-bs-target="#modalCrear">
+            + Nuevo usuario
+        </button>
+    </div>
+
+    <div class="glass-panel">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="glass-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar">@(string.IsNullOrEmpty(item.UserName) ? "?" : item.UserName.Substring(0,1).ToUpper())</div>
+                                        <span class="fw-semibold">@item.UserName</span>
+                                    </div>
+                                </td>
+                                <td>@item.Email</td>
+                                <td><span class="role-pill">@item.Rol</span></td>
+                                <td>
+                                    @if (item.Activo)
+                                    {
+                                        <span class="status-pill status-active"><span class="dot"></span>Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-pill status-inactive"><span class="dot"></span>Inactivo</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-soft btn-soft-edit"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalEditar"
+                                                onclick="cargarModalEditar('@item.Id', '@item.UserName', '@item.Email', '@item.Rol')">
+                                            Editar
+                                        </button>
+                                        <button class="btn-soft btn-soft-warning"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalReset"
+                                                onclick="cargarModalReset('@item.Id', '@item.UserName')">
+                                            Resetear contraseña
+                                        </button>
+                                        <form asp-action="CambiarEstado" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="activo" value="@(item.Activo ? "false" : "true")" />
+                                            <button type="submit" class="btn-soft @(item.Activo ? "btn-soft-danger" : "btn-soft-success")">
+                                                @(item.Activo ? "Desactivar" : "Activar")
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">Todavía no hay usuarios cargados.</div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="modalCrear" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Crear" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre completo</label>
+                        <input name="NombreCompleto" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input name="Email" type="email" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña</label>
+                        <input name="Password" type="password" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rol</label>
+                        <select name="Rol" class="form-select" required>
+                            <option value="Admin">Administrador</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Operador">Operador</option>
+                            <option value="Transportista">Transportista</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Estado inicial</label>
+                        <select name="Activo" class="form-select" required>
+                            <option value="true" selected>Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Editar" method="post">
+                <input type="hidden" id="editId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre completo</label>
+                        <input id="editUserName" name="NombreCompleto" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input id="editEmail" name="Email" type="email" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Rol</label>
+                        <select id="editRol" name="Rol" class="form-select" required>
+                            <option value="Admin">Administrador</option>
+                            <option value="Supervisor">Supervisor</option>
+                            <option value="Operador">Operador</option>
+                            <option value="Transportista">Transportista</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Resetear contraseña -->
+<div class="modal fade" id="modalReset" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="ResetearPassword" method="post">
+                <input type="hidden" id="resetId" name="id" />
+                <div class="modal-header">
+                    <h5 class="modal-title">Resetear contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted" style="font-size:.88rem;">
+                        Vas a establecer una nueva contraseña para <strong id="resetUserName"></strong> sin necesidad de conocer la anterior.
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label">Nueva contraseña</label>
+                        <input name="nuevaPassword" type="password" class="form-control" required minlength="6" />
+                        <div class="form-text">Mínimo 6 caracteres. Compartisela al usuario por un canal seguro.</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-primary-glass">Resetear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function cargarModalEditar(id, userName, email, rol) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editUserName').value = userName;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editRol').value = rol;
+        }
+
+        function cargarModalReset(id, userName) {
+            document.getElementById('resetId').value = id;
+            document.getElementById('resetUserName').textContent = userName;
+        }
+    </script>
+}

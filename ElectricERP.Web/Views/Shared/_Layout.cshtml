@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Electric ERP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ElectricERP.Web.styles.css" asp-append-version="true" />
+    <style>
+        :root {
+            --bg-a: #EEF4FD;
+            --bg-b: #F8FAFF;
+            --glass: rgba(255,255,255,.62);
+            --glass-strong: rgba(255,255,255,.8);
+            --glass-border: rgba(255,255,255,.9);
+            --navy: #10233F;
+            --text-muted: #66738C;
+            --blue: #2D6CDF;
+            --blue-2: #6FA0F5;
+            --blue-soft: rgba(45,108,223,.10);
+            --shadow: 0 20px 50px rgba(45,108,223,.12);
+        }
+
+        html, body {
+            min-height: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(ellipse 900px 500px at 12% -5%, rgba(45,108,223,.14), transparent 60%),
+                radial-gradient(ellipse 700px 450px at 100% 15%, rgba(111,160,245,.14), transparent 55%),
+                linear-gradient(180deg, var(--bg-b), var(--bg-a));
+            color: var(--navy);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        main { flex: 1 0 auto; }
+
+        a { color: var(--blue); text-decoration: none; }
+        a:hover { color: var(--navy); }
+
+        .navbar {
+            background: var(--glass) !important;
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-bottom: 1px solid rgba(255,255,255,.7) !important;
+            box-shadow: 0 4px 24px rgba(45,108,223,.06);
+            padding-top: .85rem;
+            padding-bottom: .85rem;
+        }
+
+        .brand-logo-wrap {
+            position: relative;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo-wrap::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            background: radial-gradient(circle, rgba(45,108,223,.35), transparent 70%);
+            filter: blur(6px);
+            border-radius: 50%;
+        }
+
+        .brand-logo-wrap img {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(45,108,223,.25);
+        }
+
+        .navbar-brand {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.12rem;
+            letter-spacing: -.01em;
+            color: var(--navy) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            font-size: .92rem;
+            position: relative;
+            transition: color .2s ease;
+        }
+
+        .nav-link:hover { color: var(--navy) !important; }
+
+        .user-menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            border: 1px solid rgba(45,108,223,.14);
+            border-radius: 999px;
+            padding: 5px 14px 5px 6px;
+            cursor: pointer;
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .user-menu-toggle:hover { background: rgba(45,108,223,.06); border-color: rgba(45,108,223,.25); }
+
+        .btn-primary-glass-nav {
+            background: linear-gradient(135deg, var(--blue), var(--blue-2));
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: .87rem;
+            padding: 8px 20px;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 8px 22px rgba(45,108,223,.24);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .btn-primary-glass-nav:hover {
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(45,108,223,.3);
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--blue-2));
+            color: #fff;
+            font-size: .8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .user-menu-toggle .user-name {
+            font-size: .87rem;
+            font-weight: 500;
+            color: var(--navy);
+            max-width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-menu-toggle .chevron {
+            color: var(--text-muted);
+            transition: transform .2s ease;
+        }
+
+        .user-menu-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+
+        .user-dropdown {
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(22px) saturate(160%);
+            -webkit-backdrop-filter: blur(22px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(45,108,223,.16);
+            padding: 8px;
+            min-width: 230px;
+        }
+
+        .user-dropdown .dropdown-header-custom {
+            padding: 8px 12px 10px;
+            border-bottom: 1px solid rgba(45,108,223,.08);
+            margin-bottom: 6px;
+        }
+
+        .user-dropdown .dropdown-header-custom .label {
+            font-size: .72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .user-dropdown .dropdown-header-custom .value {
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--navy);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .user-dropdown .dropdown-item-custom {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            padding: 9px 12px;
+            font-size: .88rem;
+            font-weight: 500;
+            color: var(--navy);
+            text-align: left;
+            text-decoration: none;
+        }
+
+        .user-dropdown .dropdown-item-custom:hover { background: rgba(45,108,223,.07); color: var(--navy); }
+        .user-dropdown .dropdown-item-custom.danger { color: #C4453D; }
+        .user-dropdown .dropdown-item-custom.danger:hover { background: rgba(220,60,60,.08); }
+        .user-dropdown .dropdown-item-custom svg { flex-shrink: 0; opacity: .8; }
+
+        .btn-outline-danger {
+            border-color: rgba(220,60,60,.35);
+            color: #C4453D;
+            font-size: .84rem;
+            font-weight: 500;
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .btn-outline-danger:hover {
+            background: #C4453D;
+            border-color: #C4453D;
+            color: #fff;
+        }
+
+        footer.site-footer {
+            flex-shrink: 0;
+            background: #0B0F16;
+            color: #C9CFDA;
+            font-size: .85rem;
+        }
+
+        footer.site-footer .brand-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #fff;
+            letter-spacing: -.01em;
+        }
+
+        footer.site-footer .brand-line img {
+            height: 34px;
+            width: 34px;
+            object-fit: cover;
+            border-radius: 50%;
+            filter: grayscale(100%) brightness(1.6) contrast(1.05);
+            opacity: .92;
+        }
+
+        footer.site-footer a { color: #C9CFDA; }
+        footer.site-footer a:hover { color: #fff; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-0 sticky-top">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="brand-logo-wrap">
+                        <img src="~/images/logo.png" alt="Electric ERP" onerror="this.parentElement.style.display='none'" />
+                    </span>
+                    <span>Electric ERP</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Almacenes" asp-action="Index">Almacenes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Secciones" asp-action="Index">Secciones</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Productos" asp-action="Index">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedores</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Vehiculos" asp-action="Index">Vehículos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Stock" asp-action="Index">Stock</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Transferencias" asp-action="Index">Transferencias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Inventarios" asp-action="Index">Inventarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Ajustes" asp-action="Index">Ajustes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1"></ul>
+                    }
+                    <ul class="navbar-nav ms-auto align-items-sm-center">
+                        @if (User?.Identity?.IsAuthenticated == true)
+                        {
+                            var displayName = User.Identity.Name ?? "Usuario";
+                            var initial = displayName.Length > 0 ? displayName.Substring(0, 1).ToUpper() : "U";
+                            <li class="nav-item dropdown">
+                                <button class="user-menu-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="user-avatar">@initial</span>
+                                    <span class="user-name">@displayName</span>
+                                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 9l6 6 6-6"></path>
+                                    </svg>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end user-dropdown mt-2">
+                                    <li class="dropdown-header-custom">
+                                        <div class="label">Sesión iniciada como</div>
+                                        <div class="value">@displayName</div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item-custom" asp-controller="Auth" asp-action="CambiarPassword">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect>
+                                                <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path>
+                                                <circle cx="12" cy="15.2" r="1.4"></circle>
+                                            </svg>
+                                            Cambiar contraseña
+                                        </a>
+                                        <a class="dropdown-item-custom" asp-controller="Auth" asp-action="ConfigurarTwoFactor">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                                <line x1="12" y1="5" x2="12.01" y2="5"></line>
+                                                <circle cx="12" cy="19" r="1"></circle>
+                                            </svg>
+                                            Configurar Autenticación con Microsoft Authenticator
+                                        </a>
+
+
+                                    </li>
+                                    <li>
+                                        <form asp-controller="Auth" asp-action="Logout" method="post">
+                                            <button type="submit" class="dropdown-item-custom danger">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                    <path d="M16 17l5-5-5-5"></path>
+                                                    <path d="M21 12H9"></path>
+                                                </svg>
+                                                Cerrar sesión
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/Auth/Login" class="btn-primary-glass-nav" style="color: #ffffff !important;">Iniciar sesión</a>
+                            </li>
+
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer py-4 mt-5">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <span class="brand-line">
+                <img src="~/images/logo.png" alt="" onerror="this.style.display='none'" />
+                Electric ERP
+            </span>
+            <span>&copy; 2026 · Plataforma interna de logística</span>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
